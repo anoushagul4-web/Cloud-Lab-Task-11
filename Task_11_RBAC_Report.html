@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Task 11 - RBAC & Access Control Documentation</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #0b0f19;
+    color: #f1f5f9;
+    line-height: 1.7;
+}
+
+.container {
+    width: 90%;
+    max-width: 1150px;
+    margin: auto;
+}
+
+header {
+    background: linear-gradient(135deg, #111827, #172554);
+    padding: 55px 20px;
+    text-align: center;
+    border-bottom: 1px solid #334155;
+}
+
+header h1 {
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+header p {
+    color: #a5b4fc;
+    font-size: 18px;
+}
+
+.badge {
+    display: inline-block;
+    margin-top: 18px;
+    padding: 7px 14px;
+    border: 1px solid #2563eb;
+    border-radius: 20px;
+    color: #60a5fa;
+    font-size: 14px;
+}
+
+.dashboard-btn {
+    display: inline-block;
+    margin-top: 24px;
+    padding: 12px 24px;
+    background: #2563eb;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.dashboard-btn:hover {
+    background: #1d4ed8;
+}
+
+section {
+    background: #111827;
+    margin: 28px 0;
+    padding: 32px;
+    border-radius: 14px;
+    border: 1px solid #263244;
+}
+
+h2 {
+    color: #60a5fa;
+    margin-bottom: 18px;
+    font-size: 28px;
+}
+
+h3 {
+    color: #cbd5e1;
+    margin: 20px 0 10px;
+}
+
+p {
+    color: #cbd5e1;
+    margin-bottom: 14px;
+}
+
+ul,
+ol {
+    margin-left: 25px;
+    color: #cbd5e1;
+}
+
+li {
+    margin-bottom: 8px;
+}
+
+.stage {
+    border-left: 4px solid #3b82f6;
+    padding: 16px 20px;
+    margin: 18px 0;
+    background: #0f172a;
+    border-radius: 8px;
+}
+
+.stage strong {
+    color: #93c5fd;
+}
+
+.command {
+    background: #020617;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin: 12px 0 18px;
+    overflow-x: auto;
+}
+
+.command code {
+    color: #d1fae5;
+    font-family: "Courier New", monospace;
+    white-space: pre-wrap;
+}
+
+.evidence {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.evidence img {
+    width: 100%;
+    max-width: 950px;
+    border-radius: 9px;
+    border: 1px solid #475569;
+}
+
+.caption {
+    margin: 9px 0 25px;
+    color: #94a3b8;
+    font-size: 14px;
+}
+
+.result {
+    padding: 16px;
+    margin: 15px 0;
+    background: #0f172a;
+    border-left: 4px solid #22c55e;
+    border-radius: 7px;
+}
+
+.warning {
+    padding: 16px;
+    margin: 15px 0;
+    background: #1c1917;
+    border-left: 4px solid #f59e0b;
+    border-radius: 7px;
+}
+
+.info {
+    padding: 16px;
+    margin: 15px 0;
+    background: #0f172a;
+    border-left: 4px solid #3b82f6;
+    border-radius: 7px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+th,
+td {
+    padding: 12px;
+    border: 1px solid #334155;
+    text-align: left;
+}
+
+th {
+    background: #1e293b;
+    color: #93c5fd;
+}
+
+td {
+    color: #cbd5e1;
+}
+
+footer {
+    text-align: center;
+    padding: 35px;
+    color: #64748b;
+}
+
+@media (max-width: 700px) {
+
+    header h1 {
+        font-size: 29px;
+    }
+
+    section {
+        padding: 22px;
+    }
+
+    h2 {
+        font-size: 24px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+<div class="container">
+
+<h1>TechNova Cloud Platform</h1>
+
+<p>
+Task 11 — RBAC, Permissions, ACLs & Access-Control Documentation
+</p>
+
+<div class="badge">
+Linux + VMware + VS Code Practical
+</div>
+
+<br>
+
+<a class="dashboard-btn" href="technova_rbac_dashboard.html">
+Open RBAC Dashboard
+</a>
+
+</div>
+
+</header>
+
+
+<main class="container">
+
+
+<section>
+
+<h2>1. Task Overview</h2>
+
+<p>
+This practical demonstrates Role-Based Access Control (RBAC) in a Linux
+environment by organizing users into departmental groups and controlling
+their access to departmental resources.
+</p>
+
+<p>
+The practical also demonstrates Linux ownership and permissions, POSIX ACLs,
+controlled read/write access, permission-denied cases, evidence collection,
+and the preparation of a final HTML report and RBAC dashboard.
+</p>
+
+<div class="info">
+
+<strong>Final documentation workflow:</strong>
+
+Linux practical → screenshots/evidence → VM-Share → Windows VS Code →
+HTML report → RBAC dashboard.
+
+</div>
+
+</section>
+
+
+<section>
+
+<h2>2. Practical Environment</h2>
+
+<table>
+
+<tr>
+<th>Component</th>
+<th>Use in the Practical</th>
+</tr>
+
+<tr>
+<td>Ubuntu Linux VM</td>
+<td>
+Users, groups, directories, permissions, ACLs and access testing
+</td>
+</tr>
+
+<tr>
+<td>VMware Workstation</td>
+<td>
+Runs the Ubuntu virtual machine
+</td>
+</tr>
+
+<tr>
+<td>Windows Host</td>
+<td>
+Stores the shared project folder and final documentation
+</td>
+</tr>
+
+<tr>
+<td>VMware Shared Folder</td>
+<td>
+Transfers/opens practical files between Ubuntu and Windows
+</td>
+</tr>
+
+<tr>
+<td>VS Code</td>
+<td>
+Creates and edits HTML documentation and dashboard
+</td>
+</tr>
+
+<tr>
+<td>Browser</td>
+<td>
+Tests the final HTML report and RBAC dashboard
+</td>
+</tr>
+
+</table>
+
+
+<h3>Shared-folder paths</h3>
+
+<div class="command">
+
+<code>
+Windows:
+C:\VM-Share\Task-11-RBAC
+
+Ubuntu:
+/mnt/hgfs/Task-11-RBAC
+</code>
+
+</div>
+
+</section>
+
+
+<section>
+
+<h2>3. Practical Stages</h2>
+
+
+<div class="stage">
+
+<strong>
+Stage 1 — User & Group Configuration
+</strong>
+
+<br>
+
+Configured the Linux users and departmental groups used for RBAC.
+
+</div>
+
+
+<div class="stage">
+
+<strong>
+Stage 2 — Directory Structure & Permissions
+</strong>
+
+<br>
+
+Created and verified departmental directories and their ownership and
+permission settings.
+
+</div>
+
+
+<div class="stage">
+
+<strong>
+Stage 3 — ACL Configuration
+</strong>
+
+<br>
+
+Used POSIX ACL evidence to control additional user-level access where
+required.
+
+</div>
+
+
+<div class="stage">
+
+<strong>
+Stage 4 — Access-Control Testing
+</strong>
+
+<br>
+
+Tested authorized and unauthorized read/write operations and recorded
+permission-denied results.
+
+</div>
+
+
+<div class="stage">
+
+<strong>
+Stage 5 — Evidence Collection
+</strong>
+
+<br>
+
+Captured terminal screenshots showing users/groups, permissions, ACLs and
+access-control tests.
+
+</div>
+
+
+<div class="stage">
+
+<strong>
+Stage 6 — HTML Report & Dashboard
+</strong>
+
+<br>
+
+Organized the evidence into a professional HTML report and linked it to
+the RBAC dashboard.
+
+</div>
+
+
+<div class="stage">
+
+<strong>
+Stage 7 — VM-Share & Windows Integration
+</strong>
+
+<br>
+
+Configured VMware Shared Folder access so the Ubuntu practical directory
+could be accessed from Windows VS Code.
+
+</div>
+
+</section>
+
+
+<section>
+
+<h2>4. Stage 1 — Users & Groups</h2>
+
+<p>
+The Linux environment contained six practical users distributed across
+departmental roles. The configured primary groups represented
+Administration, Developers and Testers.
+</p>
+
+
+<table>
+
+<tr>
+<th>Department / Role</th>
+<th>Group</th>
+<th>Example User</th>
+</tr>
+
+<tr>
+<td>Administration</td>
+<td>admin</td>
+<td>ali</td>
+</tr>
+
+<tr>
+<td>Development</td>
+<td>developers</td>
+<td>ahmed</td>
+</tr>
+
+<tr>
+<td>Testing / QA</td>
+<td>testers</td>
+<td>usman</td>
+</tr>
+
+</table>
+
+
+<p>
+The terminal evidence also showed the users
+<strong>ali, sara, ahmed, hamza, usman and zain</strong>
+and the departmental groups
+<strong>admin, developers and testers</strong>.
+</p>
+
+
+<div class="evidence">
+
+<img
+src="screenshots/01_users_and_groups.png.png"
+alt="Users and groups evidence">
+
+<div class="caption">
+Figure 1: Users, groups, UID/GID and group membership evidence.
+</div>
+
+</div>
+
+</section>
+
+
+<section>
+
+<h2>5. Stage 2 — Directory Structure & Permissions</h2>
+
+<p>
+Departmental resources were organized under
+<strong>/company</strong>.
+The evidence showed separate administrative, development, testing and
+shared areas.
+</p>
+
+
+<table>
+
+<tr>
+<th>Area</th>
+<th>Purpose</th>
+</tr>
+
+<tr>
+<td>/company/admin</td>
+<td>Administrative resources</td>
+</tr>
+
+<tr>
+<td>/company/admin/employee_records</td>
+<td>Employee records</td>
+</tr>
+
+<tr>
+<td>/company/admin/finance</td>
+<td>Finance resources</td>
+</tr>
+
+<tr>
+<td>/company/development</td>
+<td>Development resources</td>
+</tr>
+
+<tr>
+<td>/company/development/source_code</td>
+<td>Source code</td>
+</tr>
+
+<tr>
+<td>/company/development/documentation</td>
+<td>Development documentation</td>
+</tr>
+
+<tr>
+<td>/company/testing</td>
+<td>Testing resources</td>
+</tr>
+
+<tr>
+<td>/company/testing/test_data</td>
+<td>Test data</td>
+</tr>
+
+<tr>
+<td>/company/testing/test_reports</td>
+<td>QA/test reports</td>
+</tr>
+
+<tr>
+<td>/company/shared</td>
+<td>Shared organizational resources</td>
+</tr>
+
+</table>
+
+
+<p>
+The practical demonstrated that protected directories and files cannot
+simply be accessed by an unauthorized user.
+</p>
+
+
+<div class="evidence">
+
+<img
+src="screenshots/02_directory_permissions.png.png"
+alt="Directory permissions evidence">
+
+<div class="caption">
+Figure 2: Directory ownership, groups and permissions.
+</div>
+
+</div>
+
+</section>
+
+
+<section>
+
+<h2>6. Stage 3 — ACL Configuration</h2>
+
+<p>
+Access Control Lists were inspected for individual files to verify the
+effective user, group and other permissions.
+</p>
+
+
+<h3>Development source-code example</h3>
+
+<div class="command">
+
+<code>
+sudo getfacl /company/development/source_code/app.py
+</code>
+
+</div>
+
+
+<p>
+The recorded ACL evidence showed
+<strong>ahmed</strong> as the file owner and
+<strong>developers</strong> as the group.
+It also showed a separate ACL entry for
+<strong>zain</strong>, demonstrating user-specific access beyond the
+basic owner/group model.
+</p>
+
+
+<h3>Testing report example</h3>
+
+<div class="command">
+
+<code>
+sudo getfacl /company/testing/test_reports/test_report.txt
+</code>
+
+</div>
+
+
+<p>
+The testing report was owned by
+<strong>usman</strong> with the
+<strong>testers</strong> group, and an additional user entry was visible
+for <strong>ahmed</strong>.
+</p>
+
+
+<div class="evidence">
+
+<img
+src="screenshots/03_acl_evidence.png.png"
+alt="ACL evidence">
+
+<div class="caption">
+Figure 3: POSIX ACL entries and effective access rules.
+</div>
+
+</div>
+
+</section>
+
+
+<section>
+
+<h2>7. Stage 4 — Access-Control Testing</h2>
+
+
+<h3>7.1 Permission-denied verification</h3>
+
+<p>
+When protected resources were accessed as the normal user, Linux returned
+permission-denied messages. This provided direct evidence that the
+configured permissions were being enforced.
+</p>
+
+
+<h3>7.2 Ahmed — read access to the testing report</h3>
+
+<div class="command">
+
+<code>
+sudo -u ahmed cat /company/testing/test_reports/test_report.txt
+</code>
+
+</div>
+
+
+<p>
+This command successfully displayed the QA report, demonstrating that
+Ahmed had read access to the file.
+</p>
+
+
+<h3>7.3 Ahmed — write access denied</h3>
+
+<div class="command">
+
+<code>
+sudo -u ahmed sh -c 'echo edit >> /company/testing/test_reports/test_report.txt'
+</code>
+
+</div>
+
+
+<div class="result">
+
+<strong>Observed result:</strong>
+Permission denied.
+
+<br>
+
+This demonstrated that successful read access did not automatically
+provide write access.
+
+</div>
+
+
+<h3>7.4 Zain — source-code read access</h3>
+
+<div class="command">
+
+<code>
+sudo -u zain cat /company/development/source_code/app.py
+</code>
+
+</div>
+
+
+<p>
+The command successfully displayed the application source code, confirming
+Zain's permitted read access.
+</p>
+
+
+<h3>7.5 Zain — write access denied</h3>
+
+<div class="command">
+
+<code>
+sudo -u zain sh -c 'echo edit >> /company/development/source_code/app.py'
+</code>
+
+</div>
+
+
+<div class="result">
+
+<strong>Observed result:</strong>
+Permission denied.
+
+<br>
+
+This confirmed that Zain's access was restricted to the permissions
+assigned to him.
+
+</div>
+
+
+<div class="evidence">
+
+<img
+src="screenshots/04_access_control_tests.png.png"
+alt="Access control tests">
+
+<div class="caption">
+Figure 4: Access-control testing, including successful reads and denied writes.
+</div>
+
+</div>
+
+</section>
+
+
+<section>
+
+<h2>8. Problems Encountered & How They Were Resolved</h2>
+
+
+<div class="warning">
+
+<strong>
+Problem 1 — Permission denied when listing protected files
+</strong>
+
+<p>
+Normal-user access to protected departmental files produced
+<code>Permission denied</code>.
+Administrative verification using
+<code>sudo ls -ld ...</code>
+was used to inspect ownership and permission configuration.
+</p>
+
+</div>
+
+
+<div class="warning">
+
+<strong>
+Problem 2 — su authentication failure
+</strong>
+
+<div class="command">
+
+<code>
+su - ahmed -c 'cat /company/testing/test_reports/test_report.txt'
+</code>
+
+</div>
+
+
+<p>
+This returned
+<code>su: Authentication failure</code>.
+Instead of relying on the target user's password, the practical used the
+administrator's authorized sudo capability:
+</p>
+
+
+<div class="command">
+
+<code>
+sudo -u ahmed cat /company/testing/test_reports/test_report.txt
+</code>
+
+</div>
+
+
+<p>
+The file was then successfully read as Ahmed.
+</p>
+
+</div>
+
+
+<div class="warning">
+
+<strong>
+Problem 3 — Shared folder path initially unavailable
+</strong>
+
+
+<div class="command">
+
+<code>
+ls /mnt/hgfs/
+
+ls: cannot access '/mnt/hgfs/': No such file or directory
+</code>
+
+</div>
+
+
+<p>
+The mount point was created and the VMware shared folder was mounted:
+</p>
+
+
+<div class="command">
+
+<code>
+sudo mkdir -p /mnt/hgfs
+
+sudo mount -t fuse.vmhgfs-fuse .host:/VM-Share /mnt/hgfs -o allow_other
+</code>
+
+</div>
+
+
+<p>
+After mounting, the shared folder became visible under
+<code>/mnt/hgfs/</code>.
+</p>
+
+</div>
+
+
+<div class="warning">
+
+<strong>
+Problem 4 — Shared-folder subdirectory confusion
+</strong>
+
+
+<p>
+The first attempt to access
+<code>/mnt/hgfs/VM-Share/Task-11-RBAC</code>
+failed because the mounted VMware share itself was already exposed at
+<code>/mnt/hgfs/</code>.
+</p>
+
+
+<p>
+The correct path was:
+</p>
+
+
+<div class="command">
+
+<code>
+/mnt/hgfs/Task-11-RBAC
+</code>
+
+</div>
+
+</div>
+
+
+<div class="result">
+
+<strong>Important lesson:</strong>
+
+The permission-denied results were not failures of the practical.
+They were useful evidence showing that Linux access-control rules were
+actually working.
+
+</div>
+
+</section>
+
+
+<section>
+
+<h2>9. Stage 5 — Evidence Collection</h2>
+
+<p>
+Four primary screenshots were collected for the RBAC practical:
+</p>
+
+
+<ol>
+
+<li>Users and groups</li>
+
+<li>Directory permissions</li>
+
+<li>ACL evidence</li>
+
+<li>Access-control tests</li>
+
+</ol>
+
+
+<p>
+The screenshots were organized inside the
+<strong>screenshots</strong>
+folder so that the HTML report could display them directly.
+</p>
+
+
+<div class="info">
+
+<strong>Evidence folder:</strong>
+
+<code>
+Task-11-RBAC/screenshots/
+</code>
+
+</div>
+
+</section>
+
+
+<section>
+
+<h2>10. Stage 6 — HTML Report & RBAC Dashboard</h2>
+
+<p>
+After completing the Linux practical, the evidence was organized into
+two HTML files:
+</p>
+
+
+<table>
+
+<tr>
+<th>File</th>
+<th>Purpose</th>
+</tr>
+
+<tr>
+<td>Task_11_RBAC_Report.html</td>
+<td>
+Complete practical documentation, evidence, problems and results
+</td>
+</tr>
+
+<tr>
+<td>technova_rbac_dashboard.html</td>
+<td>
+Visual RBAC administration and compliance dashboard
+</td>
+</tr>
+
+</table>
+
+
+<p>
+The report contains navigation links to the dashboard so the practical
+documentation and visual summary can be accessed together.
+</p>
+
+
+<a
+class="dashboard-btn"
+href="technova_rbac_dashboard.html">
+
+Open TechNova RBAC Dashboard
+
+</a>
+
+</section>
+
+
+<section>
+
+<h2>11. Stage 7 — VMware Shared Folder & Windows Integration</h2>
+
+
+<p>
+Because the Linux practical was being performed inside VMware while the
+HTML documentation was being prepared in Windows VS Code, VMware Shared
+Folders were used to make the same Task-11-RBAC directory accessible from
+both systems.
+</p>
+
+
+<h3>Windows shared-folder configuration</h3>
+
+
+<p>
+The VMware Shared Folder was configured as
+<strong>VM-Share</strong>
+with the Windows host path:
+</p>
+
+
+<div class="command">
+
+<code>
+C:\VM-Share
+</code>
+
+</div>
+
+
+<h3>Ubuntu access</h3>
+
+
+<div class="command">
+
+<code>
+vmware-hgfsclient
+
+sudo mkdir -p /mnt/hgfs
+
+sudo mount -t fuse.vmhgfs-fuse .host:/VM-Share /mnt/hgfs -o allow_other
+
+ls -l /mnt/hgfs/
+</code>
+
+</div>
+
+
+<p>
+The shared folder exposed the
+<strong>Task-11-RBAC</strong>
+directory to Ubuntu.
+</p>
+
+
+<p>
+The final practical directory was then accessed as:
+</p>
+
+
+<div class="command">
+
+<code>
+cd /mnt/hgfs/Task-11-RBAC
+
+pwd
+
+ls -la
+</code>
+
+</div>
+
+
+<p>
+This allowed the HTML report and dashboard created/edited through
+Windows VS Code to be stored in the same shared project directory.
+</p>
+
+
+<h3>Shared-folder evidence</h3>
+
+
+<p>
+The following two screenshots document the VMware Shared Folder and the
+Ubuntu/Windows file workflow.
+</p>
+
+
+<div class="evidence">
+
+<img
+src="screenshots/05_vm_share_setup.png"
+alt="VMware shared folder setup"
+onerror="this.style.display='none'">
+
+<div class="caption">
+
+Figure 5: VMware Shared Folder setup and VM-Share configuration.
+
+</div>
+
+</div>
+
+
+<div class="evidence">
+
+<img
+src="screenshots/06_vm_share_file_transfer.png"
+alt="VMware shared folder file workflow"
+onerror="this.style.display='none'">
+
+<div class="caption">
+
+Figure 6: Ubuntu/Windows shared-folder workflow for the Task-11-RBAC files.
+
+</div>
+
+</div>
+
+
+</section>
+
+
+<section>
+
+<h2>12. Final Project Structure</h2>
+
+
+<div class="command">
+
+<code>
+Task-11-RBAC/
+│
+├── screenshots/
+│   ├── 01_users_and_groups.png.png
+│   ├── 02_directory_permissions.png.png
+│   ├── 03_acl_evidence.png.png
+│   ├── 04_access_control_tests.png.png
+│   ├── 05_vm_share_setup.png
+│   └── 06_vm_share_file_transfer.png
+│
+├── Task_11_RBAC_Report.html
+└── technova_rbac_dashboard.html
+</code>
+
+</div>
+
+
+<p>
+Windows location:
+</p>
+
+
+<div class="command">
+
+<code>
+C:\VM-Share\Task-11-RBAC
+</code>
+
+</div>
+
+
+<p>
+Ubuntu location:
+</p>
+
+
+<div class="command">
+
+<code>
+/mnt/hgfs/Task-11-RBAC
+</code>
+
+</div>
+
+</section>
+
+
+<section>
+
+<h2>13. Final Results</h2>
+
+
+<ul>
+
+<li>
+Users and departmental groups were verified.
+</li>
+
+<li>
+Departmental directories and ownership were verified.
+</li>
+
+<li>
+POSIX ACL entries were inspected and documented.
+</li>
+
+<li>
+Authorized read operations were successfully demonstrated.
+</li>
+
+<li>
+Unauthorized write operations returned Permission denied.
+</li>
+
+<li>
+Permission-related problems were investigated and resolved.
+</li>
+
+<li>
+VMware Shared Folder integration was configured successfully.
+</li>
+
+<li>
+The evidence was organized into a structured HTML report.
+</li>
+
+<li>
+The report was connected to the TechNova RBAC dashboard.
+</li>
+
+</ul>
+
+
+<div class="result">
+
+<strong>Overall result:</strong>
+
+The practical successfully demonstrated Linux-based RBAC and
+access-control enforcement with documented evidence, troubleshooting,
+shared-folder integration, and a final visual dashboard.
+
+</div>
+
+</section>
+
+
+<section>
+
+<h2>14. Conclusion</h2>
+
+
+<p>
+This task provided practical experience with Role-Based Access Control in
+Linux. Users were organized into departmental groups, resources were
+separated by department, permissions and ACLs were inspected, and real
+access attempts were used to verify the policy.
+</p>
+
+
+<p>
+The permission-denied cases were especially important because they
+provided direct proof that unauthorized operations were being restricted.
+The VMware Shared Folder workflow then connected the Ubuntu practical
+environment with Windows VS Code, allowing the final evidence, report and
+dashboard to be maintained in one project directory.
+</p>
+
+
+<p>
+The completed documentation therefore represents the full workflow from
+Linux configuration and testing to evidence collection, troubleshooting,
+Windows integration and final RBAC presentation.
+</p>
+
+
+<div style="text-align:center;margin-top:25px">
+
+<a
+class="dashboard-btn"
+href="technova_rbac_dashboard.html">
+
+View Final RBAC Dashboard
+
+</a>
+
+</div>
+
+</section>
+
+
+</main>
+
+
+<footer>
+
+TechNova Cloud Platform — Task 11 RBAC Practical Documentation
+
+</footer>
+
+
+</body>
+</html>
